@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  users.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "56198:80"
+
+  nosql.data:
+    ports:
+      - "27017:27017"
+###    volumes:
+###      - mongodata:/data/db
+###volumes:
+###  mongodata:
