@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using Swashbuckle.AspNetCore.Swagger;
 using Users.API.Infrastructure;
 using Users.API.Infrastructure.Repositories;
@@ -57,6 +58,17 @@ namespace Users.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
+
+            //services.AddTransient<IUsersContext, UsersContext>();
+            //services.AddScoped<IMongoDatabase>(serviceProvider => {
+                //IOptions <UserSettings> settings
+                //var client = new MongoClient(settings.Value.ConnectionString);
+                //return client.GetDatabase(settings.Value.Database);
+
+                //var dbParams = serviceProvider.GetRequiredService<IDatabaseParameters>();
+                //var client = new MongoClient(dbParams.ConnectionString);
+                //return client.GetDatabase(dbParams.DatabaseName);
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
