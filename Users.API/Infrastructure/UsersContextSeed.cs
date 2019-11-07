@@ -14,15 +14,21 @@ namespace Users.API.Infrastructure
 {
     public class UsersContextSeed
     {
-        private static UsersContext ctx;
+        private readonly IUsersContext context;
+        private readonly IMongoDatabase database = null;
 
-        public static async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory)
+        public UsersContextSeed(IUsersContext context, IMongoDatabase database)
         {
-            var config = applicationBuilder.ApplicationServices.GetRequiredService<IOptions<UserSettings>>();
+            this.context = context;
+            this.database = database;            
+        }
 
-            ctx = new UsersContext(config);
+        public async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory)
+        {
+            //var config = applicationBuilder.ApplicationServices.GetRequiredService<IOptions<UserSettings>>();
+            //ctx = new UsersContext(config);            
 
-            if (!ctx.Users.Database.GetCollection<UsersModel>(nameof(UsersModel)).AsQueryable().Any())
+            if (!context.Users.Database.GetCollection<UsersModel>(nameof(UsersModel)).AsQueryable().Any())
             {
                 await SetIndexesAsync();
                 await SetUsersAsync();
@@ -45,15 +51,15 @@ namespace Users.API.Infrastructure
             //}
         }
 
-        private static async Task SetIndexesAsync()
+        private async Task SetIndexesAsync()
         {
             // Set location indexes
             var builder = Builders<UsersModel>.IndexKeys;            
             var indexModel = new CreateIndexModel<UsersModel>(builder.Ascending(x => x.LastName));
-            await ctx.Users.Indexes.CreateOneAsync(indexModel);
+            await context.Users.Indexes.CreateOneAsync(indexModel);
         }
 
-        private static async Task SetUsersAsync()
+        private async Task SetUsersAsync()
         {
             var userList = new List<UsersModel>{
                 new UsersModel { UserId = 1, FirstName = "Juan", LastName = "Perez" },
@@ -61,7 +67,7 @@ namespace Users.API.Infrastructure
                 new UsersModel { UserId = 3, FirstName = "Ramon", LastName = "Diaz" }
             };
             
-            await ctx.Users.InsertManyAsync(userList);
+            await context.Users.InsertManyAsync(userList);
         }
     }
 }

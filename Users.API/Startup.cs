@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Swashbuckle.AspNetCore.Swagger;
@@ -53,22 +54,28 @@ namespace Users.API
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             //});
 
-            services.Configure<UserSettings>(Configuration);
+            //services.Configure<UserSettings>(Configuration);
+            services.Configure<UserSettings>(Configuration.GetSection(nameof(UserSettings)));
+            //services.AddSingleton<IUserSettings>(serviceProvider => serviceProvider.GetRequiredService<IOptions<UserSettings>>().Value);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
 
-            //services.AddTransient<IUsersContext, UsersContext>();
-            //services.AddScoped<IMongoDatabase>(serviceProvider => {
-                //IOptions <UserSettings> settings
+            services.AddTransient<IUserSettings, UserSettings>();
+            services.AddTransient<IUsersContext, UsersContext>();            
+            services.AddScoped<IMongoDatabase>(serviceProvider =>
+            {                
+                //var settings = serviceProvider.GetRequiredService<IUserSettings>();
                 //var client = new MongoClient(settings.Value.ConnectionString);
                 //return client.GetDatabase(settings.Value.Database);
 
-                //var dbParams = serviceProvider.GetRequiredService<IDatabaseParameters>();
-                //var client = new MongoClient(dbParams.ConnectionString);
-                //return client.GetDatabase(dbParams.DatabaseName);
-            //});
+                //var dbParams = serviceProvider.GetRequiredService<IUserSettings>();
+                //var dbParams = serviceProvider.GetService<UserSettings>();
+                var dbParams = serviceProvider.GetRequiredService<IOptions<UserSettings>>();
+                var client = new MongoClient(dbParams.Value.ConnectionString);
+                return client.GetDatabase(dbParams.Value.Database);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,7 +104,33 @@ namespace Users.API
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.API V1");
                });
 
-            UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
+            //UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
+
+            //var usersContext = app.ApplicationServices.GetRequiredService<IUsersContext>();
+            //var mongoDb = app.ApplicationServices.GetRequiredService<IMongoDatabase>();
+            //var usersContextSeed = new UsersContextSeed(usersContext, mongoDb);
+            //var usersContextSeed = new UsersContextSeed(usersContext, null);
+            //usersContextSeed.SeedAsync(app, loggerFactory).Wait();
+
+            PrepareDatabase(app, loggerFactory);
+        }
+
+        public void PrepareDatabase(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            try
+            {
+                using (var scope = app.ApplicationServices.CreateScope())
+                //using (var context = scope.ServiceProvider.GetService<UsersContext>())
+                using (var context = scope.ServiceProvider.GetRequiredService<IUsersContext>())
+                {
+                    var usersContextSeed = new UsersContextSeed(context, null);
+                    usersContextSeed.SeedAsync(app, loggerFactory).Wait();
+                }
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
         }
     }
 }
