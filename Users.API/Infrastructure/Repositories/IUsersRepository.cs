@@ -8,9 +8,11 @@ namespace Users.API.Infrastructure.Repositories
 {
     public interface IUsersRepository
     {
-        Task<List<UsersModel>> GetUserListAsync();
+        //Task<List<UsersModel>> GetUserListAsync();
 
-        Task<UsersModel> GetUserAsync(int userId);
+        //Task<UsersModel> GetUserAsync(int userId);
+
+        Task<List<UsersModel>> GetAllAsync();
 
         Task<UsersModel> GetAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);

@@ -15,14 +15,19 @@ namespace Users.API.Infrastructure.Services
             _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
         }
 
-        public async Task<List<UsersModel>> GetAllUserAsync()
-        {
-            return await _usersRepository.GetUserListAsync();
-        }
+        //public async Task<List<UsersModel>> GetAllUserAsync()
+        //{
+        //    return await _usersRepository.GetUserListAsync();
+        //}
 
-        public async Task<UsersModel> GetUserAsync(int userId)
+        //public async Task<UsersModel> GetUserAsync(int userId)
+        //{
+        //    return await _usersRepository.GetUserAsync(userId);
+        //}
+
+        public async Task<List<UsersModel>> GetAllAsync()
         {
-            return await _usersRepository.GetUserAsync(userId);
+            return await _usersRepository.GetAllAsync();
         }
     }
 }

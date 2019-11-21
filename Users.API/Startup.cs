@@ -31,7 +31,8 @@ namespace Users.API
         }
 
         public IConfiguration Configuration { get; }
-        public IContainer Container { get; private set; }
+        //public IContainer Container { get; private set; }
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -66,14 +67,22 @@ namespace Users.API
 
             services.AddInitializers(typeof(IMongoDbInitializer));
 
-            var builder = new ContainerBuilder();
-            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly()).AsImplementedInterfaces();            
+            //var builder = new ContainerBuilder();
+            //builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly()).AsImplementedInterfaces();            
+            //builder.AddMongo();
+            //builder.AddMongoRepository<UsersModel>("Users");
+
+            //Container = builder.Build();
+
+            //new AutofacServiceProvider(Container);
+        }
+
+        // For reference see https://docs.autofac.org/en/latest/integration/aspnetcore.html#asp-net-core-3-0-and-generic-hosting
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly()).AsImplementedInterfaces();
             builder.AddMongo();
             builder.AddMongoRepository<UsersModel>("Users");
-
-            Container = builder.Build();
-
-            new AutofacServiceProvider(Container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,6 +112,8 @@ namespace Users.API
                });
 
             //UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
+
+            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
         }
     }
 }

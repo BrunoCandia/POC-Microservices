@@ -8,6 +8,8 @@ namespace Users.API.Infrastructure.Mongo
 {
     public interface IMongoRepository<TEntity> where TEntity : IIdentifiable
     {
+        Task<List<TEntity>> GetAllAsync();
+
         Task<TEntity> GetAsync(Guid id);
         //Task<TEntity> GetAsync(string id);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate);

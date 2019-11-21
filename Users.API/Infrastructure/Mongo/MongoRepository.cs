@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Users.API.Infrastructure.Mongo
@@ -14,6 +15,11 @@ namespace Users.API.Infrastructure.Mongo
         public MongoRepository(IMongoDatabase database, string collectionName)
         {
             Collection = database.GetCollection<TEntity>(collectionName);
+        }
+
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await Collection.Find(new BsonDocument()).ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(Guid id)

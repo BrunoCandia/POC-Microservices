@@ -8,8 +8,10 @@ namespace Users.API.Infrastructure.Services
 {
     public interface IUsersService
     {
-        Task<List<UsersModel>> GetAllUserAsync();
+        //Task<List<UsersModel>> GetAllUserAsync();
 
-        Task<UsersModel> GetUserAsync(int userId);
+        //Task<UsersModel> GetUserAsync(int userId);
+
+        Task<List<UsersModel>> GetAllAsync();
     }
 }

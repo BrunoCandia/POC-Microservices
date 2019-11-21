@@ -23,31 +23,38 @@ namespace Users.API.Controllers
             _usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
         }
 
-        //GET api/v1/[controller]/
-        //[Route("")]
         [HttpGet]
         [ProducesResponseType(typeof(List<UsersModel>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<List<UsersModel>>> GetAllUserAsync()
         {
-            return await _usersService.GetAllUserAsync();
+            return await _usersService.GetAllAsync();
         }
 
+        //GET api/v1/[controller]/
+        //[Route("")]
+        //[HttpGet]
+        //[ProducesResponseType(typeof(List<UsersModel>), (int)HttpStatusCode.OK)]
+        //public async Task<ActionResult<List<UsersModel>>> GetAllUserAsync()
+        //{
+        //    return await _usersService.GetAllUserAsync();            
+        //}
+
         //GET api/v1/[controller]/1
-        [Route("{userId}")]
-        [HttpGet]
-        [ProducesResponseType(typeof(UsersModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<UsersModel>> GetUserAsync(int userId)
-        {
-            var user = await _usersService.GetUserAsync(userId);
+        //[Route("{userId}")]
+        //[HttpGet]
+        //[ProducesResponseType(typeof(UsersModel), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType((int)HttpStatusCode.NotFound)]
+        //public async Task<ActionResult<UsersModel>> GetUserAsync(int userId)
+        //{
+        //    var user = await _usersService.GetUserAsync(userId);
 
-            if (user != null)
-            {
-                return user;
-            }
+        //    if (user != null)
+        //    {
+        //        return user;
+        //    }
 
-            return NotFound();
-        }        
+        //    return NotFound();
+        //}
 
         // GET: api/Users
         //[HttpGet]

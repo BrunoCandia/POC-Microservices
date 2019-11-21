@@ -14,29 +14,34 @@ namespace Users.API.Infrastructure.Repositories
         private readonly UsersContext _context;
         private readonly IMongoRepository<UsersModel> _repository;
 
-        public UsersRepository(IOptions<UserSettings> settings)
-        {
-            _context = new UsersContext(settings);
-        }
+        //public UsersRepository(IOptions<UserSettings> settings)
+        //{
+        //    _context = new UsersContext(settings);
+        //}
 
         public UsersRepository(IMongoRepository<UsersModel> repository)
         {
             _repository = repository;
         }
 
-        public async Task<List<UsersModel>> GetUserListAsync()
+        //public async Task<List<UsersModel>> GetUserListAsync()
+        //{
+        //    return await _context.Users.Find(new BsonDocument()).ToListAsync();                        
+        //}
+
+        //public async Task<UsersModel> GetUserAsync(int userId)
+        //{
+        //    var filter = Builders<UsersModel>.Filter.Eq("UserId", userId);
+
+        //    return await _context.Users
+        //                         .Find(filter)
+        //                         .FirstOrDefaultAsync();
+        //}
+
+        public async Task<List<UsersModel>> GetAllAsync()
         {
-            return await _context.Users.Find(new BsonDocument()).ToListAsync();                        
+            return await _repository.GetAllAsync();
         }
-
-        public async Task<UsersModel> GetUserAsync(int userId)
-        {
-            var filter = Builders<UsersModel>.Filter.Eq("UserId", userId);
-
-            return await _context.Users
-                                 .Find(filter)
-                                 .FirstOrDefaultAsync();
-        }                
 
         public async Task<UsersModel> GetAsync(Guid id)
             => await _repository.GetAsync(id);
