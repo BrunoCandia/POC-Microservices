@@ -19,9 +19,9 @@ namespace Users.API.Infrastructure
         //        _database = client.GetDatabase(settings.Value.Database);            
         //}
 
-        public UsersContext(IMongoDatabase _database)
+        public UsersContext(/*IMongoDatabase _database*/ IMongoClient client, string databaseName)
         {            
-            this._database = _database;
+            this._database = client.GetDatabase(databaseName);
         }
 
         public IMongoCollection<usersModel.UsersModel> Users

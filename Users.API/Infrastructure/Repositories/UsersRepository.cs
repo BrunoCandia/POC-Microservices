@@ -9,14 +9,20 @@ namespace Users.API.Infrastructure.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
-        private readonly IUsersContext _context;
+        //private readonly IUsersContext _context;
+        private readonly UsersContext _context;
 
         //public UsersRepository(IOptions<UserSettings> settings)
         //{
         //    _context = new UsersContext(settings);
         //}
 
-        public UsersRepository(IUsersContext _context)
+        //public UsersRepository(IUsersContext _context)
+        //{
+        //    this._context = _context;
+        //}
+
+        public UsersRepository(UsersContext _context)
         {
             this._context = _context;
         }

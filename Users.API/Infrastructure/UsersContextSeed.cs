@@ -14,19 +14,26 @@ namespace Users.API.Infrastructure
 {
     public class UsersContextSeed
     {
-        private readonly IUsersContext context;
+        //private readonly IUsersContext context;
         private readonly IMongoDatabase database = null;
+        private readonly UsersContext context;
 
-        public UsersContextSeed(IUsersContext context, IMongoDatabase database)
+        //public UsersContextSeed(IUsersContext context, IMongoDatabase database)
+        //{
+        //    this.context = context;
+        //    this.database = database;            
+        //}
+
+        public UsersContextSeed(UsersContext context, IMongoClient client, string databaseName)
         {
             this.context = context;
-            this.database = database;            
+            this.database = client.GetDatabase(databaseName);
         }
 
         public async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory)
         {
             //var config = applicationBuilder.ApplicationServices.GetRequiredService<IOptions<UserSettings>>();
-            //ctx = new UsersContext(config);            
+            //ctx = new UsersContext(config);
 
             if (!context.Users.Database.GetCollection<UsersModel>(nameof(UsersModel)).AsQueryable().Any())
             {

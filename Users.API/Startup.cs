@@ -63,19 +63,22 @@ namespace Users.API
             services.AddTransient<IUsersRepository, UsersRepository>();
 
             services.AddTransient<IUserSettings, UserSettings>();
-            services.AddTransient<IUsersContext, UsersContext>();            
-            services.AddScoped<IMongoDatabase>(serviceProvider =>
-            {                
-                //var settings = serviceProvider.GetRequiredService<IUserSettings>();
-                //var client = new MongoClient(settings.Value.ConnectionString);
-                //return client.GetDatabase(settings.Value.Database);
+            //services.AddTransient<IUsersContext, UsersContext>();            
+            //services.AddScoped<IMongoDatabase>(serviceProvider =>
+            //{                
+            //    //var settings = serviceProvider.GetRequiredService<IUserSettings>();
+            //    //var client = new MongoClient(settings.Value.ConnectionString);
+            //    //return client.GetDatabase(settings.Value.Database);
 
-                //var dbParams = serviceProvider.GetRequiredService<IUserSettings>();
-                //var dbParams = serviceProvider.GetService<UserSettings>();
-                var dbParams = serviceProvider.GetRequiredService<IOptions<UserSettings>>();
-                var client = new MongoClient(dbParams.Value.ConnectionString);
-                return client.GetDatabase(dbParams.Value.Database);
-            });
+            //    //var dbParams = serviceProvider.GetRequiredService<IUserSettings>();
+            //    //var dbParams = serviceProvider.GetService<UserSettings>();
+            //    var dbParams = serviceProvider.GetRequiredService<IOptions<UserSettings>>();
+            //    var client = new MongoClient(dbParams.Value.ConnectionString);
+            //    return client.GetDatabase(dbParams.Value.Database);
+            //});
+
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("MongoDb")));
+            services.AddScoped(s => new UsersContext(s.GetRequiredService<IMongoClient>(), Configuration["Database"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,9 +124,13 @@ namespace Users.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 //using (var context = scope.ServiceProvider.GetService<UsersContext>())
-                using (var context = scope.ServiceProvider.GetRequiredService<IUsersContext>())
+                //using (var context = scope.ServiceProvider.GetRequiredService<IUsersContext>())                
                 {
-                    var usersContextSeed = new UsersContextSeed(context, null);
+                    var context = new UsersContext(scope.ServiceProvider.GetRequiredService<IMongoClient>(), Configuration["Database"]);
+
+                    //var usersContextSeed = new UsersContextSeed(context, null);
+                    var client = scope.ServiceProvider.GetRequiredService<IMongoClient>();
+                    var usersContextSeed = new UsersContextSeed(context, client, Configuration["Database"]);
                     usersContextSeed.SeedAsync(app, loggerFactory).Wait();
                 }
             }
