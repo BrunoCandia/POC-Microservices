@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
 namespace Users.API.Infrastructure.Mongo
@@ -63,4 +64,22 @@ namespace Users.API.Infrastructure.Mongo
             return model;
         }
     }
+
+    public static class Extensions3
+    {
+        public static IServiceCollection AddInitializers(this IServiceCollection services, params Type[] initializers)
+            => initializers == null
+                ? services
+                : services.AddTransient<IStartupInitializer, StartupInitializer>(c =>
+                {
+                    var startupInitializer = new StartupInitializer();
+                    var validInitializers = initializers.Where(t => typeof(IInitializer).IsAssignableFrom(t));
+                    foreach (var initializer in validInitializers)
+                    {
+                        startupInitializer.AddInitializer(c.GetService(initializer) as IInitializer);
+                    }
+
+                    return startupInitializer;
+                });
+    }    
 }

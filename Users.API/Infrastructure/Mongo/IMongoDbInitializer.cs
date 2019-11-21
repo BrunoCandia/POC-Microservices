@@ -7,10 +7,5 @@ namespace Users.API.Infrastructure.Mongo
 {
     public interface IMongoDbInitializer : IInitializer
     {
-    }
-
-    public interface IInitializer
-    {
-        Task InitializeAsync();
-    }
+    }    
 }

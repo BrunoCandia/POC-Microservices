@@ -11,5 +11,13 @@ namespace Users.API.Infrastructure.Repositories
         Task<List<UsersModel>> GetUserListAsync();
 
         Task<UsersModel> GetUserAsync(int userId);
+
+        Task<UsersModel> GetAsync(Guid id);
+        Task<bool> ExistsAsync(Guid id);
+        Task<bool> ExistsAsync(string name);
+        //Task<PagedResult<UsersModel>> BrowseAsync(BrowseProducts query);
+        Task AddAsync(UsersModel product);
+        Task UpdateAsync(UsersModel product);
+        Task DeleteAsync(Guid id);
     }
 }
