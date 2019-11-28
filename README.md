@@ -27,3 +27,7 @@ docker-compose up --build
 ### To use swagger the host is mapped to the port 56198
 
 So navigate to http://localhost:56198/swagger/index.html to test the api
+
+### Sample of Unit of Work
+
+For reference see https://github.com/brunohbrito/MongoDB-RepositoryUoWPatterns

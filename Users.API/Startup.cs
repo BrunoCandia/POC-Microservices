@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Users.API.Infrastructure;
+using Users.API.Infrastructure.Mongo;
+using Users.API.Infrastructure.Persistence;
 using Users.API.Infrastructure.Repositories;
 using Users.API.Infrastructure.Services;
 
@@ -32,6 +34,8 @@ namespace Users.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            MongoDbPersistence.Configure();
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -56,7 +60,11 @@ namespace Users.API
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUsersService, UsersService>();
-            services.AddTransient<IUsersRepository, UsersRepository>();
+            //services.AddTransient<IUsersRepository, UsersRepository>();
+
+            services.AddScoped<IMongoContext, MongoContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<Infrastructure.Mongo.IUsersRepository, Infrastructure.Mongo.UsersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,7 +93,7 @@ namespace Users.API
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.API V1");
                });
 
-            UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
+            //UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
         }
     }
 }
