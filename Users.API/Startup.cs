@@ -10,9 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Users.API.Infrastructure;
+using Users.API.Infrastructure.Mongo;
+using Users.API.Infrastructure.Persistence;
 using Users.API.Infrastructure.Repositories;
 using Users.API.Infrastructure.Services;
 
@@ -32,6 +35,8 @@ namespace Users.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            MongoDbPersistence.Configure();
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -57,6 +62,8 @@ namespace Users.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
+
+            services.AddScoped<IMongoContext, MongoContext>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,9 +90,31 @@ namespace Users.API
                {
                    //c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Users.API V1");                   
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.API V1");
+                   c.RoutePrefix = string.Empty;
                });
 
-            UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
+            //UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
+
+            PrepareDatabase(app, loggerFactory);
+        }
+
+        public void PrepareDatabase(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            try
+            {
+                using (var scope = app.ApplicationServices.CreateScope())                
+                {
+                    var settings = scope.ServiceProvider.GetRequiredService<IOptions<UserSettings>>();
+
+                    var context = new MongoContext(settings);                                        
+                    var usersContextSeed = new UsersContextSeed(context);
+                    usersContextSeed.SeedAsync(app, loggerFactory).Wait();
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
     }
 }
