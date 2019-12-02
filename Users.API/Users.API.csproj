@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.9.2" />
+    <PackageReference Include="ServiceStack.Core" Version="5.7.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 

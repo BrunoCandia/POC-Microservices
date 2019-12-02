@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using ServiceStack;
 using Users.API.Infrastructure.Mongo;
 
 namespace Users.API.Infrastructure.Repositories
