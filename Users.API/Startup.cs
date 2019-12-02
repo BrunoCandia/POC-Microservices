@@ -49,13 +49,7 @@ namespace Users.API
                     Description = "The User Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
                     TermsOfService = new Uri("https://example.com/terms")
                 });
-            });
-
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            //});
+            });            
 
             services.Configure<UserSettings>(Configuration);
 
@@ -68,9 +62,7 @@ namespace Users.API
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
-        {
-            var pathBase = Configuration["PATH_BASE"];
-
+        {            
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();
@@ -92,8 +84,6 @@ namespace Users.API
                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.API V1");
                    c.RoutePrefix = string.Empty;
                });
-
-            //UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
 
             PrepareDatabase(app, loggerFactory);
         }

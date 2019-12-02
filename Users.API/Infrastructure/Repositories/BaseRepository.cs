@@ -22,12 +22,14 @@ namespace Users.API.Infrastructure.Repositories
             DbSet = Context.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public virtual void Add(TEntity obj)
+        public virtual async Task AddAsync(TEntity obj)
         {
-            throw new NotImplementedException();
+            ConfigDbSet();
+
+            await DbSet.InsertOneAsync(obj);
         }        
 
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             ConfigDbSet();
 
@@ -36,20 +38,28 @@ namespace Users.API.Infrastructure.Repositories
             return all.ToList();
         }
 
-        public virtual Task<TEntity> GetById(Guid id)
+        public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            ConfigDbSet();
+
+            var data = await DbSet.FindAsync(Builders<TEntity>.Filter.Eq(" _id ", id));
+
+            return data.FirstOrDefault();
         }
 
-        public virtual void Remove(Guid id)
+        public virtual async Task RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            ConfigDbSet();
+
+            await DbSet.DeleteOneAsync(Builders<TEntity>.Filter.Eq(" _id ", id));
         }
 
-        public virtual void Update(TEntity obj)
+        public virtual async Task UpdateAsync(TEntity obj)
         {
-            throw new NotImplementedException();
-        }
+            ConfigDbSet();
+
+            await DbSet.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(" _id ", obj.GetId()), obj);
+        }        
 
         public void Dispose()
         {
