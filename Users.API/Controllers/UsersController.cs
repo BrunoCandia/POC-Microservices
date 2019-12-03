@@ -5,6 +5,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Users.API.DTO;
+using Users.API.DTO.Common;
 using Users.API.Infrastructure.Services;
 using Users.API.Model;
 using Users.API.ViewModel;
@@ -58,6 +60,13 @@ namespace Users.API.Controllers
             var users = await _usersService.GetAllAsync();
 
             return users.ToList();
+        }
+
+        [Route("RetrieveUsersData")]
+        [ProducesResponseType(typeof(PageResultDTO<UsersModelDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PageResultDTO<UsersModelDTO>>> PostRetrieveUsersData([FromBody]UserRequest userRequest)
+        {
+
         }
 
         // GET: api/Users
