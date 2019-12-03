@@ -21,9 +21,9 @@ namespace Users.API.Infrastructure
 
         public async Task SeedAsync(IApplicationBuilder applicationBuilder, ILoggerFactory loggerFactory)
         {            
-            if (!_context.GetCollection<UsersModel>("Users").AsQueryable().Any())
+            if (!_context.GetCollection<UsersModel>("UsersModel").AsQueryable().Any())
             {
-                if (!_context.GetCollection<UsersModel>("Users").Find(new BsonDocument()).ToList().Any())
+                if (!_context.GetCollection<UsersModel>("UsersModel").Find(new BsonDocument()).ToList().Any())
                 {
                     await SetIndexesAsync();
                     await SetUsersAsync();
@@ -36,7 +36,7 @@ namespace Users.API.Infrastructure
             // Set location indexes
             var builder = Builders<UsersModel>.IndexKeys;
             var indexModel = new CreateIndexModel<UsersModel>(builder.Ascending(x => x.LastName));            
-            await _context.GetCollection<UsersModel>("Users").Indexes.CreateOneAsync(indexModel);
+            await _context.GetCollection<UsersModel>("UsersModel").Indexes.CreateOneAsync(indexModel);
         }
 
         private async Task SetUsersAsync()
@@ -47,7 +47,7 @@ namespace Users.API.Infrastructure
                 new UsersModel { UserId = 3, FirstName = "Ramon", LastName = "Diaz" }
             };
 
-            await _context.GetCollection<UsersModel>("Users").InsertManyAsync(userList);
+            await _context.GetCollection<UsersModel>("UsersModel").InsertManyAsync(userList);
         }
     }
 }

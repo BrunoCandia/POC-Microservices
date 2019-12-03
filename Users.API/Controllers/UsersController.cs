@@ -47,7 +47,18 @@ namespace Users.API.Controllers
             }
 
             return NotFound();
-        }        
+        }
+
+        //GET api/v1/[controller]/
+        [Route("GetAllAsync")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<UsersModel>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<UsersModel>>> GetAllAsync()
+        {
+            var users = await _usersService.GetAllAsync();
+
+            return users.ToList();
+        }
 
         // GET: api/Users
         //[HttpGet]

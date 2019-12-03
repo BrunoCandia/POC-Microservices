@@ -18,14 +18,14 @@ namespace Users.API.Infrastructure.Repositories
 
         public async Task<List<UsersModel>> GetUserListAsync()
         {
-            return await _context.GetCollection<UsersModel>("Users").Find(new BsonDocument()).ToListAsync();            
+            return await _context.GetCollection<UsersModel>("UsersModel").Find(new BsonDocument()).ToListAsync();            
         }        
 
         public async Task<UsersModel> GetUserAsync(int userId)
         {
             var filter = Builders<UsersModel>.Filter.Eq("UserId", userId);
 
-            return await _context.GetCollection<UsersModel>("Users")
+            return await _context.GetCollection<UsersModel>("UsersModel")
                                  .Find(filter)
                                  .FirstOrDefaultAsync();
         }

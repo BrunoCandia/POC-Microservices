@@ -11,5 +11,7 @@ namespace Users.API.Infrastructure.Services
         Task<List<UsersModel>> GetAllUserAsync();
 
         Task<UsersModel> GetUserAsync(int userId);
+
+        Task<IEnumerable<UsersModel>> GetAllAsync();
     }
 }

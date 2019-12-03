@@ -25,7 +25,7 @@ namespace Users.API.Infrastructure.Services
             return await _usersRepository.GetUserAsync(userId);
         }
 
-        public async Task<IEnumerable<UsersModel>> GetAllUserAsync2()
+        public async Task<IEnumerable<UsersModel>> GetAllAsync()
         {
             return await _usersRepository.GetAllAsync();
         }        

@@ -20,7 +20,7 @@ namespace Users.API.Infrastructure
         {
             get
             {
-                return _database.GetCollection<usersModel.UsersModel>("Users");
+                return _database.GetCollection<usersModel.UsersModel>("UsersModel");
             }
         }
     }
