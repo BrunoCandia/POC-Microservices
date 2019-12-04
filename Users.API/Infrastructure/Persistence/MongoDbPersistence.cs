@@ -15,11 +15,12 @@ namespace Users.API.Infrastructure.Persistence
             // Conventions
             var pack = new ConventionPack
                 {
+                    new CamelCaseElementNameConvention(),
                     new IgnoreExtraElementsConvention(true),
                     new IgnoreIfDefaultConvention(true)
                 };
 
-            ConventionRegistry.Register("My Solution Conventions", pack, t => true);
+            ConventionRegistry.Register("My Solution Conventions", pack, type => true);
         }
     }
 }
