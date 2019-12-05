@@ -4,7 +4,7 @@ using Users.API.Model;
 
 namespace Users.API.Infrastructure.Repositories
 {    
-    public interface IUsersRepository : IRepository<UsersModel, string>
+    public interface IUsersRepository : IRepository<UsersModel, MongoDB.Bson.ObjectId>
     {
         Task<List<UsersModel>> GetUserListAsync();
 

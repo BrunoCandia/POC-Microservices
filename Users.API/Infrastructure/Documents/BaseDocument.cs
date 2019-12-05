@@ -11,8 +11,8 @@ namespace Users.API.Infrastructure.Documents
             CreatedOn = DateTime.UtcNow;
         }
 
-        //[BsonId]
-        //[BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public TEntityKey Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
