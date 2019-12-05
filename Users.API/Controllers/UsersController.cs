@@ -62,12 +62,12 @@ namespace Users.API.Controllers
             return users.ToList();
         }
 
-        [Route("RetrieveUsersData")]
-        [ProducesResponseType(typeof(PageResultDTO<UsersModelDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PageResultDTO<UsersModelDTO>>> PostRetrieveUsersData([FromBody]UserRequest userRequest)
-        {
+        //[Route("RetrieveUsersData")]
+        //[ProducesResponseType(typeof(PageResultDTO<UsersModelDTO>), (int)HttpStatusCode.OK)]
+        //public async Task<ActionResult<PageResultDTO<UsersModelDTO>>> PostRetrieveUsersData([FromBody]UserRequest userRequest)
+        //{
 
-        }
+        //}
 
         // GET: api/Users
         //[HttpGet]
