@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using Users.API.DTO.Common.Paging.Request;
+using Users.API.DTO.Paging.Response;
 using Users.API.Infrastructure.Repositories;
 using Users.API.Model;
 
@@ -28,6 +31,13 @@ namespace Users.API.Infrastructure.Services
         public async Task<IEnumerable<UsersModel>> GetAllAsync()
         {
             return await _usersRepository.GetAllAsync();
-        }        
+        }
+
+        public async Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO request)
+        {
+            var filter = Builders<UsersModel>.Filter.Eq("LastName", "Diaz");
+
+            return await _usersRepository.GetPagedListAsync(request, filter);
+        }
     }
 }

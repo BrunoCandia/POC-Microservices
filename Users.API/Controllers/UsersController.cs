@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.DTO;
 using Users.API.DTO.Common;
+using Users.API.DTO.Common.Paging.Request;
+using Users.API.DTO.Paging.Response;
 using Users.API.Infrastructure.Services;
 using Users.API.Model;
 using Users.API.ViewModel;
@@ -15,7 +17,7 @@ namespace Users.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Produces("application/json")]    
+    [Produces("application/json")]
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
@@ -68,6 +70,26 @@ namespace Users.API.Controllers
         //{
 
         //}
+
+        //GET api/v1/[controller]/
+        [Route("GetPagedAsync")]
+        [HttpPost]
+        [ProducesResponseType(typeof(IPagedResult<UsersModel>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IPagedResult<UsersModel>>> GetPagedAsync([FromQuery] PagedRequestDTO request)
+        {
+            try
+            {
+                var req = new PagedRequestDTO(request.PageIndex, request.PageSize);
+
+                var result = await _usersService.GetPagedAsync(req);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }            
+        }
 
         // GET: api/Users
         //[HttpGet]

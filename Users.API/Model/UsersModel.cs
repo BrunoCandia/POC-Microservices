@@ -1,13 +1,14 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Users.API.Infrastructure.Documents;
 
 namespace Users.API.Model
 {
-    public class UsersModel
+    public class UsersModel : BaseDocument<string>
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        //[BsonId]
+        //[BsonRepresentation(BsonType.ObjectId)]
+        //public string Id { get; set; }
 
         public int UserId { get; set; }
 

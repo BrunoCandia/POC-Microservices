@@ -25,7 +25,7 @@ namespace Users.API.Infrastructure
             {
                 if (!_context.GetCollection<UsersModel>("UsersModel").Find(new BsonDocument()).ToList().Any())
                 {
-                    await SetIndexesAsync();
+                    //await SetIndexesAsync();
                     await SetUsersAsync();
                 }                
             }            
@@ -44,7 +44,19 @@ namespace Users.API.Infrastructure
             var userList = new List<UsersModel>{
                 new UsersModel { UserId = 1, FirstName = "Juan", LastName = "Perez" },
                 new UsersModel { UserId = 2, FirstName = "Pepe", LastName = "Lopez" },
-                new UsersModel { UserId = 3, FirstName = "Ramon", LastName = "Diaz" }
+                new UsersModel { UserId = 3, FirstName = "Ramon", LastName = "Diaz" },
+                new UsersModel { UserId = 4, FirstName = "Ramon2", LastName = "Diaz" },
+                new UsersModel { UserId = 5, FirstName = "Ramon3", LastName = "Diaz" },
+                new UsersModel { UserId = 6, FirstName = "Ramon4", LastName = "Diaz" },
+                new UsersModel { UserId = 7, FirstName = "Ramon5", LastName = "Diaz" },
+                new UsersModel { UserId = 8, FirstName = "Ramon6", LastName = "Diaz" },
+                new UsersModel { UserId = 9, FirstName = "Ramon7", LastName = "Diaz" },
+                new UsersModel { UserId = 10, FirstName = "Ramon8", LastName = "Diaz" },
+                new UsersModel { UserId = 11, FirstName = "Ramon9", LastName = "Diaz" },
+                new UsersModel { UserId = 12, FirstName = "Ramon10", LastName = "Diaz" },
+                new UsersModel { UserId = 13, FirstName = "Ramon11", LastName = "Diaz" },
+                new UsersModel { UserId = 14, FirstName = "Ramon12", LastName = "Diaz" },
+                new UsersModel { UserId = 15, FirstName = "Ramon13", LastName = "Diaz" }
             };
 
             await _context.GetCollection<UsersModel>("UsersModel").InsertManyAsync(userList);

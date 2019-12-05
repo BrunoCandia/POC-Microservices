@@ -1,9 +1,10 @@
 ﻿
 using Users.API.DTO.Common;
+using Users.API.DTO.Common.Paging.Request;
 
 namespace Users.API.ViewModel
 {
-    public class UserRequest : PageParamDTO
+    public class UserRequest : PagedRequestDTO /*PageParamDTO*/
     {
         public string FirstName { get; set; }
 

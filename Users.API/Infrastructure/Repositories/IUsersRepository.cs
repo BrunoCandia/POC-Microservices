@@ -4,7 +4,7 @@ using Users.API.Model;
 
 namespace Users.API.Infrastructure.Repositories
 {    
-    public interface IUsersRepository : IRepository<UsersModel>
+    public interface IUsersRepository : IRepository<UsersModel, string>
     {
         Task<List<UsersModel>> GetUserListAsync();
 

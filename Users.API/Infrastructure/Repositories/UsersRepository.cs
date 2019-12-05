@@ -9,7 +9,7 @@ using Users.API.Model;
 
 namespace Users.API.Infrastructure.Repositories
 {
-    public class UsersRepository : BaseRepository<UsersModel>, IUsersRepository
+    public class UsersRepository : BaseRepository<UsersModel, string>, IUsersRepository
     {
         private readonly IMongoContext _context;
 
