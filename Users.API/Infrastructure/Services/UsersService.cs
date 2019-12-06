@@ -33,11 +33,18 @@ namespace Users.API.Infrastructure.Services
             return await _usersRepository.GetAllAsync();
         }
 
-        public async Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO request)
+        public async Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, string requestFilter)
         {
-            var filter = Builders<UsersModel>.Filter.Eq("LastName", "Diaz");
+            var filter = Builders<UsersModel>.Filter.Eq("LastName", requestFilter);
+            
+            return await _usersRepository.GetPagedListAsync(requestPaged, filter);
+        }
 
-            return await _usersRepository.GetPagedListAsync(request, filter);
+        public async Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, Dictionary<string, string> fieldsValues)
+        {            
+            var filters = _usersRepository.GetFilters<UsersModel>(fieldsValues);
+
+            return await _usersRepository.GetPagedListAsync(requestPaged, filters);
         }
     }
 }

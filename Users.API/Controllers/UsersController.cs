@@ -75,13 +75,24 @@ namespace Users.API.Controllers
         [Route("GetPagedAsync")]
         [HttpPost]
         [ProducesResponseType(typeof(IPagedResult<UsersModel>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IPagedResult<UsersModel>>> GetPagedAsync([FromQuery] PagedRequestDTO request)
+        public async Task<ActionResult<IPagedResult<UsersModel>>> GetPagedAsync([FromBody] UserRequest userRequest)
         {
             try
             {
-                var req = new PagedRequestDTO(request.PageIndex, request.PageSize);
+                var requestPaged = new PagedRequestDTO(userRequest.PageIndex, userRequest.PageSize);
+                var requestFilter = userRequest.LastName;
 
-                var result = await _usersService.GetPagedAsync(req);
+                var fieldsValues = new Dictionary<string, string>();
+                if (userRequest.Filters.Any())
+                {                    
+                    foreach (var filter in userRequest.Filters)
+                    {
+                        fieldsValues.Add(filter.PropertyName, filter.PropertyValue);
+                    }
+                }
+                
+                //var result = await _usersService.GetPagedAsync(requestPaged, requestFilter);
+                var result = await _usersService.GetPagedAsync(requestPaged, fieldsValues);
 
                 return Ok(result);
             }

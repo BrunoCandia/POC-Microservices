@@ -16,6 +16,8 @@ namespace Users.API.Infrastructure.Services
 
         Task<IEnumerable<UsersModel>> GetAllAsync();
 
-        Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO request);
+        Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, string resquestFilter);
+
+        Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, Dictionary<string, string> fieldsValues);
     }
 }

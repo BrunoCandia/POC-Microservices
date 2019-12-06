@@ -135,6 +135,9 @@ namespace Users.API.Infrastructure.Repositories
 
         public virtual Task<IPagedResult<TEntity>> GetPagedListAsync(PagedRequestDTO request, FilterDefinition<TEntity> filters = null, SortDefinition<TEntity> sort = null, CancellationToken cancellation = default)
         {
+            //var count = filters.InList().Count();
+            //var count2 = filters.ToObjectDictionary().Count();
+
             if (filters == null)
             {
                 filters = Builders<TEntity>.Filter.Empty;

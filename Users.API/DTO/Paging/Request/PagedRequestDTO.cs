@@ -1,7 +1,7 @@
 ﻿
 namespace Users.API.DTO.Common.Paging.Request
 {
-    public class PagedRequestDTO
+    public class PagedRequestDTO : FilterParamDTO
     {
         public PagedRequestDTO()
         {
