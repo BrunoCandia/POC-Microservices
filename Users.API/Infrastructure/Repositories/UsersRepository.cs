@@ -124,13 +124,13 @@ namespace Users.API.Infrastructure.Repositories
         //    var documents = await documentRepository.DocumentsMatchEqFieldValueAsync<BsonDocument>(Courses,
         //                fieldsValues: new Dictionary<string, string>
         //                {
-        //            { "state", "NJ" },
-        //            { "city", "Jersey City" }
+        //                  { "state", "NJ" },
+        //                  { "city", "Jersey City" }
         //                },
         //                fieldsWithEnumerableValues: new Dictionary<string, IEnumerable<string>>
         //                {
-        //            { "services", new List<string> { "Car Rental", "Locker" } },
-        //            { "amenities", new List<string> { "Sauna", "Shop" } }
+        //                  { "services", new List<string> { "Car Rental", "Locker" } },
+        //                  { "amenities", new List<string> { "Sauna", "Shop" } }
         //                });
 
         //    // Assert
@@ -152,14 +152,14 @@ namespace Users.API.Infrastructure.Repositories
             {
                 filters.Add(fieldEqValue
                             .Select(p => builder.Eq(p.Key, p.Value))
-                            .Aggregate((p1, p2) => p1 | p2));
+                            .Aggregate((p1, p2) => p1 & p2));
             }
 
             if (fieldContainsValue != null && fieldContainsValue.Any())
             {
                 filters.Add(fieldContainsValue
                             .Select(p => builder.Regex(p.Key, new BsonRegularExpression($".*{p.Value}.*", "i")))
-                            .Aggregate((p1, p2) => p1 | p2));
+                            .Aggregate((p1, p2) => p1 & p2));
             }
 
             if (fieldEqValues != null && fieldEqValues.Any())
@@ -193,21 +193,23 @@ namespace Users.API.Infrastructure.Repositories
             {
                 filters.Add(ids
                         .Select(p => builder.Eq("_id", p))
-                        .Aggregate((p1, p2) => p1 | p2));
+                        .Aggregate((p1, p2) => p1 & p2));
             }
 
             FilterDefinition<T> filterConcat = null;
 
             if (filters.Any())
             {
-                filterConcat = builder.Or(filters);
-            }
-
-            //var filterConcat = builder.Or(filters);
+                filterConcat = builder.And(filters);
+            }            
 
             // Here's how you can debug the generated query
-            //var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<T>();
-            //var renderedFilter = filterConcat.Render(documentSerializer, BsonSerializer.SerializerRegistry).ToString();
+            var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<T>();
+
+            if (filterConcat != null)
+            {
+                var renderedFilter = filterConcat.Render(documentSerializer, BsonSerializer.SerializerRegistry).ToString();
+            }            
 
             return filterConcat;
         }
