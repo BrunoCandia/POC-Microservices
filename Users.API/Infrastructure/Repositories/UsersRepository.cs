@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using Users.API.DTO.Common;
+using Users.API.DTO.Common.Paging.Request;
 using Users.API.Infrastructure.Mongo;
 using Users.API.Model;
 
@@ -212,6 +214,29 @@ namespace Users.API.Infrastructure.Repositories
             }            
 
             return filterConcat;
+        }
+
+        public SortDefinition<T> GetSortDirection<T>(DTO.Common.SortDTO sortData)
+        {
+            //Change params to DTO.Common.SortData sortData
+
+            SortDefinition<T> sort = null;
+            var builder = Builders<T>.Sort;
+
+            if (!string.IsNullOrEmpty(sortData?.SortField))
+            {
+                if ((Sort)sortData?.SortDirection == Sort.Asc)
+                {
+                    sort = builder.Ascending(sortData.SortField);
+                }
+                else if ((Sort)sortData.SortDirection == Sort.Desc)
+                {
+                    sort = builder.Descending(sortData.SortField);
+                }
+
+            }
+
+            return sort;
         }
 
         #endregion

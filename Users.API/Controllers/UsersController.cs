@@ -90,9 +90,16 @@ namespace Users.API.Controllers
                         fieldsValues.Add(filter.PropertyName, filter.PropertyValue);
                     }
                 }
+
+                var sortData = new SortDTO();
+                if (userRequest?.SortData != null)
+                {
+                    sortData.SortDirection = userRequest.SortData.SortDirection;
+                    sortData.SortField = userRequest.SortData.SortField;
+                }
                 
                 //var result = await _usersService.GetPagedAsync(requestPaged, requestFilter);
-                var result = await _usersService.GetPagedAsync(requestPaged, fieldsValues);
+                var result = await _usersService.GetPagedAsync(requestPaged, fieldsValues, sortData);
 
                 return Ok(result);
             }

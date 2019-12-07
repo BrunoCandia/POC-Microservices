@@ -16,5 +16,7 @@ namespace Users.API.Infrastructure.Repositories
             IDictionary<string, IEnumerable<string>> fieldEqValues = null,
             IDictionary<string, IEnumerable<string>> fieldElemMatchInValues = null,
             IEnumerable<MongoDB.Bson.ObjectId> ids = null);
+
+        MongoDB.Driver.SortDefinition<T> GetSortDirection<T>(DTO.Common.SortDTO sortData);
     }
 }

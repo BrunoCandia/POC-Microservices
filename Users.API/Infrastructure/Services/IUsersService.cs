@@ -18,6 +18,6 @@ namespace Users.API.Infrastructure.Services
 
         Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, string resquestFilter);
 
-        Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, Dictionary<string, string> fieldsValues);
+        Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, Dictionary<string, string> fieldsValues = null, DTO.Common.SortDTO sortData = null);
     }
 }

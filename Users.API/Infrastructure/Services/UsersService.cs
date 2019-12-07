@@ -40,11 +40,12 @@ namespace Users.API.Infrastructure.Services
             return await _usersRepository.GetPagedListAsync(requestPaged, filter);
         }
 
-        public async Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, Dictionary<string, string> fieldsValues)
+        public async Task<IPagedResult<UsersModel>> GetPagedAsync(PagedRequestDTO requestPaged, Dictionary<string, string> fieldsValues = null, DTO.Common.SortDTO sortData = null)
         {            
             var filters = _usersRepository.GetFilters<UsersModel>(fieldsValues);
+            var sort = _usersRepository.GetSortDirection<UsersModel>(sortData);
 
-            return await _usersRepository.GetPagedListAsync(requestPaged, filters);
+            return await _usersRepository.GetPagedListAsync(requestPaged, filters, sort);
         }
     }
 }
