@@ -57,6 +57,9 @@ namespace Users.API
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IUsersRepository, UsersRepository>();
 
+            services.AddTransient<IQuestionsService, QuestionsService>();
+            services.AddTransient<IQuestionsRepository, QuestionsRepository>();
+
             services.AddScoped<IMongoContext, MongoContext>();            
         }
 

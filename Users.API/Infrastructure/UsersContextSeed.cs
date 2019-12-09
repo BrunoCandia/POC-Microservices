@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,16 @@ namespace Users.API.Infrastructure
                     //await SetIndexesAsync();
                     await SetUsersAsync();
                 }                
-            }            
+            }
+
+            if (!_context.GetCollection<Questions>("Questions").AsQueryable().Any())
+            {
+                if (!_context.GetCollection<Questions>("Questions").Find(new BsonDocument()).ToList().Any())
+                {
+                    //await SetIndexesAsync();
+                    await SetQuestionsAsync();
+                }
+            }
         }        
 
         private async Task SetIndexesAsync()
@@ -60,6 +70,74 @@ namespace Users.API.Infrastructure
             };
 
             await _context.GetCollection<UsersModel>("UsersModel").InsertManyAsync(userList);
+        }
+
+        private async Task SetQuestionsAsync()
+        {
+            var questionList = new List<Questions>{
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = " Which of the following is correct about variable naming conventions in C#?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following is correct about Object Type in C#?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following converts a type to a small floating point number in C#?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following operator determines whether an object is of a certain type in C#?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following access specifier in C# allows a class to expose its member variables and member functions to other functions and objects?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following is true about C# structures?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following is the default access specifier of a class?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Dynamic polymorphism is implemented by abstract classes and virtual functions.",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "Which of the following preprocessor directive specifies the end of a conditional directive in C#?",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                },
+                new Questions {
+                    Id = Guid.NewGuid().ToString(),
+                    QuestionText = "The finally block is used to execute a given set of statements, whether an exception is thrown or not thrown.",
+                    IsMultipleChoice = false,
+                    Tags = "csharp"
+                }                
+            };
+
+            await _context.GetCollection<Questions>("Questions").InsertManyAsync(questionList);
         }
     }
 }
