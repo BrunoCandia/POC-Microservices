@@ -36,7 +36,7 @@ namespace Users.API
         {
             services.AddControllers();
 
-            //MongoDbPersistence.Configure();
+            MongoDbPersistence.Configure();
 
             // Add framework services.
             services.AddSwaggerGen(options =>

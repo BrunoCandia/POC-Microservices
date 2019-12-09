@@ -11,7 +11,7 @@ namespace Users.API.Infrastructure.Persistence
             {
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
-                map.MapIdMember(x => x.Id);
+                //map.MapIdMember(x => x.Id);                           //Id is of BaseDocument type and gives an exception
                 //map.MapMember(x => x.FirstName).SetIsRequired(true);
             });
         }
