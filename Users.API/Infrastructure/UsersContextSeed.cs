@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Users.API.Infrastructure.Mongo;
 using Users.API.Model;
+using Users.API.Resources;
 
 namespace Users.API.Infrastructure
 {
@@ -77,61 +78,61 @@ namespace Users.API.Infrastructure
             var questionList = new List<Questions>{
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = " Which of the following is correct about variable naming conventions in C#?",
+                    QuestionText = QuestionsResource.Question1,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following is correct about Object Type in C#?",
+                    QuestionText = QuestionsResource.Question2,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following converts a type to a small floating point number in C#?",
+                    QuestionText = QuestionsResource.Question3,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following operator determines whether an object is of a certain type in C#?",
+                    QuestionText = QuestionsResource.Question4,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following access specifier in C# allows a class to expose its member variables and member functions to other functions and objects?",
+                    QuestionText = QuestionsResource.Question5,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following is true about C# structures?",
+                    QuestionText = QuestionsResource.Question6,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following is the default access specifier of a class?",
+                    QuestionText = QuestionsResource.Question7,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Dynamic polymorphism is implemented by abstract classes and virtual functions.",
+                    QuestionText = QuestionsResource.Question8,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "Which of the following preprocessor directive specifies the end of a conditional directive in C#?",
+                    QuestionText = QuestionsResource.Question9,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 },
                 new Questions {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionText = "The finally block is used to execute a given set of statements, whether an exception is thrown or not thrown.",
+                    QuestionText = QuestionsResource.Question10,
                     IsMultipleChoice = false,
                     Tags = "csharp"
                 }                
