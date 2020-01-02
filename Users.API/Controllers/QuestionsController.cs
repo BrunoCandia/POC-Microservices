@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.DTO.Common;
 using Users.API.DTO.Common.Paging.Request;
@@ -14,8 +13,9 @@ using Users.API.ViewModel;
 
 namespace Users.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1")]
     [Produces("application/json")]
     public class QuestionsController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace Users.API.Controllers
             _questionsService = questionsService ?? throw new ArgumentNullException(nameof(questionsService));
         }
 
-        //GET api/v1/[controller]/
+        //GET api/[controller]/
         //[Route("")]
         [HttpGet]
         [ProducesResponseType(typeof(List<Questions>), (int)HttpStatusCode.OK)]
@@ -42,7 +42,7 @@ namespace Users.API.Controllers
             }            
         }
 
-        //GET api/v1/[controller]/
+        //GET api/[controller]/
         [Route("GetPagedAsync")]
         [HttpPost]
         [ProducesResponseType(typeof(IPagedResult<Questions>), (int)HttpStatusCode.OK)]
@@ -76,6 +76,30 @@ namespace Users.API.Controllers
             {
                 throw ex;
             }
+        }
+
+        //GET api/[controller]/        
+        [Route("GetDummyQuestionAsync")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<Questions>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<Questions>>> GetDummyQuestionAsync()
+        {
+            var list = await GetMockedData();
+
+            return Ok(list);
+        }
+
+        private Task<List<Questions>> GetMockedData()
+        {
+            return Task.Run(() => {
+                var questionsList = new List<Questions> {
+                    new Questions { QuestionText = "Question1 V1" },
+                    new Questions { QuestionText = "Question2 V1" },
+                    new Questions { QuestionText = "Question3 V1" }
+                };
+
+                return questionsList;
+            });
         }
     }
 }

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Users.API.DTO;
 using Users.API.DTO.Common;
 using Users.API.DTO.Common.Paging.Request;
 using Users.API.DTO.Paging.Response;
@@ -15,7 +13,9 @@ using Users.API.ViewModel;
 
 namespace Users.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [ApiVersion("1")]
+    [ApiVersion("2")]
+    [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
     public class UsersController : ControllerBase
@@ -27,7 +27,8 @@ namespace Users.API.Controllers
             _usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
         }
 
-        //GET api/v1/[controller]/
+        //GET api/[controller]/
+        [MapToApiVersion("1")]
         //[Route("")]
         [HttpGet]
         [ProducesResponseType(typeof(List<UsersModel>), (int)HttpStatusCode.OK)]
@@ -36,7 +37,8 @@ namespace Users.API.Controllers
             return await _usersService.GetAllUserAsync();
         }
 
-        //GET api/v1/[controller]/1
+        //GET api/[controller]/1
+        [MapToApiVersion("1")]
         [Route("{userId}")]
         [HttpGet]
         [ProducesResponseType(typeof(UsersModel), (int)HttpStatusCode.OK)]
@@ -64,14 +66,8 @@ namespace Users.API.Controllers
             return users.ToList();
         }
 
-        //[Route("RetrieveUsersData")]
-        //[ProducesResponseType(typeof(PageResultDTO<UsersModelDTO>), (int)HttpStatusCode.OK)]
-        //public async Task<ActionResult<PageResultDTO<UsersModelDTO>>> PostRetrieveUsersData([FromBody]UserRequest userRequest)
-        //{
-
-        //}
-
-        //GET api/v1/[controller]/
+        //GET api/[controller]/
+        [MapToApiVersion("1")]
         [Route("GetPagedAsync")]
         [HttpPost]
         [ProducesResponseType(typeof(IPagedResult<UsersModel>), (int)HttpStatusCode.OK)]
@@ -97,8 +93,7 @@ namespace Users.API.Controllers
                     sortData.SortDirection = userRequest.SortData.SortDirection;
                     sortData.SortField = userRequest.SortData.SortField;
                 }
-                
-                //var result = await _usersService.GetPagedAsync(requestPaged, requestFilter);
+                                
                 var result = await _usersService.GetPagedAsync(requestPaged, fieldsValues, sortData);
 
                 return Ok(result);
@@ -107,6 +102,58 @@ namespace Users.API.Controllers
             {
                 throw ex;
             }            
+        }
+
+        //GET api/[controller]/
+        [MapToApiVersion("1")]
+        [Route("GetDummyUserAsync")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<UsersModel>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<UsersModel>>> GetDummyUserAsync()
+        {
+            var list = await GetMockedData();
+
+            return Ok(list);
+        }
+
+        //GET api/[controller]/
+        [MapToApiVersion("2")]
+        [Route("GetDummyUserAsync_V2")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<UsersModel>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<UsersModel>>> GetDummyUserAsync_V2()
+        {
+            var list = await GetMockedData_V2();
+
+            return Ok(list);
+        }
+
+        private Task<List<UsersModel>> GetMockedData()
+        {
+            return Task.Run(() => {
+                var usersList = new List<UsersModel> {
+                    new UsersModel { FirstName = "Juan", LastName = "Perez V1" },
+                    new UsersModel { FirstName = "Pepe", LastName = "Lopez V1" },
+                    new UsersModel { FirstName = "Ramon", LastName = "Diaz V1" }
+                };
+
+                return usersList;
+            });
+        }
+
+        private Task<List<UsersModel>> GetMockedData_V2()
+        {
+            return Task.Run(() => {
+                var usersList = new List<UsersModel> {
+                    new UsersModel { FirstName = "Juan", LastName = "Perez V2" },
+                    new UsersModel { FirstName = "Pepe", LastName = "Lopez V2" },
+                    new UsersModel { FirstName = "Ramon", LastName = "Diaz V2" },
+                    new UsersModel { FirstName = "Lucia", LastName = "Filot V2" },
+                    new UsersModel { FirstName = "Ana", LastName = "Sat V2" }
+                };
+
+                return usersList;
+            });
         }
 
         // GET: api/Users
