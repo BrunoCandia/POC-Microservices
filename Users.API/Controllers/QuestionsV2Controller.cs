@@ -11,6 +11,7 @@ namespace Users.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("2")]
+    [Produces("application/json")]
     public class QuestionsV2Controller : ControllerBase
     {
         private readonly IQuestionsService _questionsService;

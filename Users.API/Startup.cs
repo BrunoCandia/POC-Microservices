@@ -81,6 +81,8 @@ namespace Users.API
                                                 : actionApiVersionModel.ImplementedApiVersions.Any(version => $"v{version.ToString()}".Equals(docName));
                 });
 
+                //options.OrderActionsBy(apiDesc => apiDesc.HttpMethod.ToString());
+
                 options.DocumentFilter<AddVersionHeader>();
             });            
 

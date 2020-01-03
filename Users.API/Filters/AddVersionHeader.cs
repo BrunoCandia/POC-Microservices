@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -11,6 +12,10 @@ namespace Users.API.Filters
     {
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
+            if (swaggerDoc == null)
+            {
+                throw new ArgumentNullException(nameof(swaggerDoc));
+            }
 
             swaggerDoc.Paths.OrderBy(pair => pair.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
 
@@ -18,47 +23,48 @@ namespace Users.API.Filters
 
             foreach (var pathItem in swaggerDoc.Paths.Values)
             {
-                TryAddVersionParamTo2(pathItem, version);
-                //TryAddVersionParamTo2(pathItem, version);
-                //TryAddVersionParamTo2(pathItem, version);
-                //TryAddVersionParamTo2(pathItem, version);
-            }
+                TryAddVersionParamToDifferentOperations(pathItem, version);                
+            }            
+        }        
 
-            //foreach (var pathItem in swaggerDoc.Paths.Values)
-            //{
-            //    TryAddVersionParamTo(pathItem.Get, version);
-            //    TryAddVersionParamTo(pathItem.Post, version);
-            //    TryAddVersionParamTo(pathItem.Put, version);
-            //    TryAddVersionParamTo(pathItem.Delete, version);
-            //}
+        private void TryAddVersionParamToDifferentOperations(OpenApiPathItem openApiPathItem, string version)
+        {
+            foreach (var operations in openApiPathItem.Operations.Keys)
+            {
+                switch (operations)
+                {
+                    case OperationType.Get:
+                        TryAddVersionParamToSpecificOperation(openApiPathItem, version);
+                        break;
+
+                    case OperationType.Put:
+                        TryAddVersionParamToSpecificOperation(openApiPathItem, version);
+                        break;
+
+                    case OperationType.Post:
+                        TryAddVersionParamToSpecificOperation(openApiPathItem, version);
+                        break;
+
+                    case OperationType.Delete:
+                        TryAddVersionParamToSpecificOperation(openApiPathItem, version);
+                        break;
+
+                    default:
+                        throw new NotImplementedException("OperationType not implemented");
+                }                                
+            }            
         }
 
-        //private void TryAddVersionParamTo(Operation operation, string version)
-        //{
-        //    if (operation == null) return;
-
-        //    if (operation.Parameters == null)
-        //        operation.Parameters = new List<IParameter>();
-
-        //    operation.Parameters.Add(new NonBodyParameter
-        //    {
-        //        Name = "api-version",
-        //        In = "header",
-        //        Type = "string",
-        //        Default = version,
-        //    });
-        //}
-
-        private void TryAddVersionParamTo2(OpenApiPathItem openApiPathItem, string version)
+        private void TryAddVersionParamToSpecificOperation(OpenApiPathItem openApiPathItem, string version)
         {
             openApiPathItem.Parameters.Add(new OpenApiParameter
             {
                 Name = "x-api-version",
-                In = ParameterLocation.Header,                
+                In = ParameterLocation.Header,
                 Schema = new OpenApiSchema
                 {
                     Type = "string",
-                    Default = new OpenApiString(version)
+                    Default = new OpenApiString(version)                    
                 }
             });
         }
